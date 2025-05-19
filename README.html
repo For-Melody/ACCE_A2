@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>VU ACCE Course - Group Project 2</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="vu-acce-course---group-project-2">VU ACCE Course - Group Project 2</h1>
+<h2 id="assignment-description">Assignment Description</h2>
+<p>The goal of this assignment is to implement the K-Means clustering algorithm with Vitis HLS.
+The algorithm logic remains the same as in the previous assignment. We restate the key details below (section &quot;The Algorithm&quot;) for completeness.</p>
+<p>This assignment is split into two parts:</p>
+<ol>
+<li>Base Implementation: you have to port the original CPU-based algorithm to Vitis HLS, verify correctness, and analyze the synthesis results.</li>
+<li>Optimized Implementation (optional, but required for higher grades): improve the performance achieved by the base implementation using performance optimization techniques.</li>
+</ol>
+<h3 id="base-implementation">Base implementation</h3>
+<p>In this first part, you are asked to port the original CPU-based implementation to Vitis HLS.
+This would require you to:</p>
+<ul>
+<li>Remove unsupported C/C++ constructs (e.g., <code>malloc</code> is not synthesizable in Vitis HLS, while <code>memset</code> is), and avoid using pointers in top-level function struct arguments.</li>
+<li>Properly define the interfaces of the top-level function.</li>
+<li>Make sure that the corresponding implementation is correct in both C Simulation and RTL Co-Simulation:
+<ul>
+<li>For Co-Simulation, we suggest you use small input datasets (for correctness checks these are <code>input2D_2clusters.in</code> and <code>input2D_10clusters.in</code>) and limit the number of iterations to 10. This keeps c0-simulation time reasonable (~2 minutes for <code>input2D_2clusters.in</code>, and ~30 minutes for <code>input2D_10clusters.in</code>)</li>
+</ul>
+</li>
+<li>Analyze the performance inspecting the produced synthesis report and the log file (with the default configuration provided with this assignment, you will find it under <code>KMEANS_HLS_base/solution_KMEANS_HLS_base/solution_KMEANS_HLS_base.log </code>). To make sense of it, you must:
+<ul>
+<li>
+<p>Provide the synthesizer with hints about the number of iterations of loops. For this, we suggest you: a) explicitly set variables relevant for the number of loop iterations to constant (e.g., number of clusters, dimension, ...). <strong>Be aware:</strong> this is just for the sake of synthesis, and depends on the particular dataset you are using; b) use <code>#pragma HLS loop_tripcount</code>.</p>
+</li>
+<li>
+<p>Reason about the performance of the various loops in the top function. We suggest you to properly label them to spot them in the report. Aspects to discuss include (but are not limited to): <em>Are the loops pipelined? What is the achieved Initiation Interval (II)? Why is the II not equal to 1, if that's the case?</em></p>
+</li>
+<li>
+<p><strong>Note</strong>: by default, the provided TCL script disable automatic compiler optimization such as pipelining (<code>config_compile</code> flag). For the sake of the analysis, we ask you to report your findings <strong>without and with</strong> such compiler optimization.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>You will find more details on the files and directory organization under the Structure section.</p>
+<h3 id="optimized-implementation">Optimized Implementation</h3>
+<p>After you complete the first step, you should have gained knowledge on some of the issues or limitations of the base implementation.
+In this optional (but recommended) part, you have the freedom to optimize your implementation, using some of the techniques we discussed in class, or other you can find in the Vitis documentation.</p>
+<p>Your implementation must be written in the <code>KMEANS_HLS_optimized.cpp</code>, <code>test_KMEANS_HLS_optimized.cpp</code>, and <code>run_KMEANS_HLS_optimized.tcl</code> files. By default they have the same content of the <code>_base</code> files.</p>
+<p>As in the previous step, we require you to:</p>
+<ul>
+<li>Ensure functional correctness.</li>
+<li>Analyze performance improvements and describe what changes you made, why they improved performance, and  which techniques were applied (e.g., loop unrolling, array partitioning, dataflow pipelining, etc.).</li>
+</ul>
+<h3 id="the-algorithm">The Algorithm</h3>
+<p>Note: this section is identical to the corresponding one of the GPU assignment.</p>
+<p>The K-means clustering algorithm is an unsupervised clustering method used to classify a dataset into <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> different clusters, where the number of clusters <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> is known beforehand.
+Given a cloud of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> points P = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>x</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">( x_1, x_2 , ...,  x_m )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, where each point has <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> dimensions <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mo separator="true">,</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>x</mi><mrow><mi>i</mi><mo separator="true">,</mo><mn>2</mn></mrow></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>x</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>n</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x_i = (x_{i,1}, x_{i,2}, ... ,x_{i,n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, the K-means algorithm assigns each point to a specific cluster in <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>c</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>c</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>c</mi><mi>K</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(c_1, c_2, ... , c_K)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, whose centroid is the nearest (i.e. the distance between the cluster centroid and the point is at the minimum Euclidean
+distance). See more details on the <a href="https://en.wikipedia.org/wiki/K-means_clustering">Wikipedia page</a>, and use the sequential code as a reference to study.</p>
+<p>The algorithm works as follows:</p>
+<ol>
+<li>Select K random centroids <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>c</mi><msub><mi>e</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>c</mi><msub><mi>e</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mi>c</mi><msub><mi>e</mi><mi>K</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ce_1, ce_2,... , ce_K)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">c</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, one for each cluster.</li>
+<li>Assign each point to the nearest centroid (minimum Euclidean distance).</li>
+<li>Recompute the centroids of each cluster as the mean of the data points assigned to that
+cluster</li>
+<li>Repeat steps 2 and 3 until one of the following conditions is satisfied:
+<ul>
+<li>The centroids do not change significantly, i.e., between one iteration and the previous one, the maximum movement of all centroids within each cluster is less than a given threshold</li>
+<li>The number of data point changes from one cluster to another between one iteration and the previous one is less than a given threshold</li>
+<li>A maximum number of iterations is reached</li>
+</ul>
+</li>
+</ol>
+<p>We want you to implement a K-Means clustering algorithm with Vitis HLS. We suggest you not change this algorithm in your code. There might be floating point errors if you parallelize the algorithm in different ways, but the workflow should be (mathematically) the same.</p>
+<h2 id="structure">Structure</h2>
+<p>The structure of this project template is as follows.</p>
+<p>The <code>cpu_impl</code> folder contains the CPU sequential reference implementation. In addition, there is a slurm job script for generating reference output files with pre-defined maximum iterations.</p>
+<p>In the top folder of this assignment you will find:</p>
+<ul>
+<li>the <code>KMEANS_HLS_base.cpp</code>, almost 1:1 copy of the sequential code. The <code>do_compute</code> is assumed to be top function.</li>
+<li>the <code>KMEANS.h</code> header, containing data type definition.</li>
+<li>the testbench file <code>test_KMEANS_base.cpp</code> (that is in charge of loading input files, writing result, and invoke the top function).</li>
+<li>the TCL script <code>run_KMEANS_HLS_base.tcl</code>, that contains the commands to setup a project, running C-Simulation, Synthesis and Co-Simulation</li>
+<li>corresponding files for the optimized version of the code (second step of the assignment): <code>KMEANS_HLS_optimized.cpp</code>, <code>test_KMEANS_HLS_optimized.cpp</code>, and <code>run_KMEANS_HLS_optimized.tcl</code>. By default, they have the same content of the <code>_base</code> files.</li>
+</ul>
+<p>You need to port the K-Means to Vitis HLS. You are allowed to change the provided files as you wish.
+<strong>Important:</strong> In your submission, have TCL scripts and all required files in a good state to test your code. We will use them to validate your code (so they must work out of the box).</p>
+<h3 id="input">Input</h3>
+<p>The <code>test_files</code> folder contains a few test data examples.
+An input file starts with 2 integers <code>npoints</code> and <code>ndims</code> in the first line, representing the number of data points and the dimensions of each point respectively. Then it is followed by <code>npoints</code> lines, one for each data point in the cloud of points to be classified, with each dimension (a single precision floating point number) of the points separated by spaces.</p>
+<p>See <code>test_files/input2D_2clusters.in</code>, a small data file with 20 points and 2 dimensions. The 2D points are generated with 2 pre-defined cluster centroids:</p>
+<p><img src="file:////home/tdematt/surfdrive/teaching/Accelerator_Centric/course_repository/ACCE/FPGA_project/imgs/myplot.png" alt="2D data with 2 clusters"></p>
+<p>You can generate your own input files for your experiment design using the <code>test_files/datagen.py</code> Python script template provided.</p>
+<h3 id="output">Output</h3>
+<p>The output file contains <code>npoints</code> lines, with a single integer in each line. The integer <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> in the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>-th line represents the cluster ID of the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>-th point (correspondingly, the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(i+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>-th line in the input file), with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><msub><mi>c</mi><mi>i</mi></msub><mo>≤</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">1 \le c_i \le K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.786em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span>. The cluster IDs start from 1. A possible output file for <code>test_files/input2D_2clusters.in</code> is <code>test_files/2D_2clusters_10iter.out</code>, where <code>10iter</code> means the pre-defined maximum iteration is 10.</p>
+<p>Under <code>test_files</code> you will find some pre-generated reference output files. These are for the input files that specify the number of clusters in their name (e.g., <code>input2D_2clusters.in</code>) and will be used for correctness check (see later).
+We generated the reference output with the CPU sequential code and max. 10 iterations:</p>
+<pre><code class="language-bash">prun -np 1 ./KMEANS_seq ./test_files/input&lt;ndim&gt;D_&lt;K&gt;clusters.in &lt;K&gt; 10 0 0 ./test_files/&lt;ndim&gt;D_&lt;K&gt;clusters.out
+</code></pre>
+<p>Also, in the standard output, you can also see the log info for the number of cluster changes &amp; centroid distance per iteration (the 3 terminate conditions in the algorithm step 4). In the iteration <code>it</code>, the out format is as follows:</p>
+<pre><code>[&lt;it&gt;] Cluster changes: &lt;changes&gt;        Max. centroid distance: &lt;maxDist&gt;
+</code></pre>
+<p>This output is handled in the <code>KMEANS.c</code> file and you just need to store the 3 required numbers into the result after each iteration (see line 108 in <code>KMEANS_seq.c</code>):</p>
+<pre><code class="language-C">r-&gt;outputMsg[it - <span class="hljs-number">1</span>] = (<span class="hljs-keyword">struct</span> message) { it, changes, maxDist };
+</code></pre>
+<h3 id="execution">Execution</h3>
+<p>You can run the sequential code with the following command:</p>
+<pre><code class="language-bash">sbatch ./cpu_impl/job.sh
+</code></pre>
+<p>the job script contains the compilation and 4 executions with dfferent input data files with the usage of:</p>
+<pre><code class="language-bash">./cpu_impl/KMEANS_seq &lt;input data file&gt; &lt;number of clusters&gt; &lt;maximum number of iterations&gt; &lt;Minimum percentage of class changes&gt; &lt;Precision <span class="hljs-keyword">in</span> the centroid distance&gt; &lt;output file&gt;
+</code></pre>
+<p>To run the HLS implementation you can use the provided TCL script</p>
+<pre><code class="language-bash">vitis_hls -f run_KMEANS_HLS_base.tcl
+</code></pre>
+<p>or the job script:</p>
+<pre><code class="language-bash">sbatch job_base.sh
+</code></pre>
+<p><strong>Important:</strong></p>
+<ul>
+<li>Inspect the content of the TCL script. By default, it executes the full flow: C Simulation, Synthesis, and RTL Co-Simulation.</li>
+<li>If you wish to change the input dataset or skip specific steps, you must <strong>manually edit the TCL script accordingly</strong>.</li>
+<li>Our suggestion is that you start by verifying the result of the C Simulation, as this step is faster and helps catch early functional errors before proceeding to RTL Co-Simulation.</li>
+<li>Synthesis is a stochastic process: its results may vary depending on the compute node used. To ensure reproducibility, always run synthesis on the same compute node and <strong>mention it in your report</strong>.</li>
+</ul>
+<h3 id="correctness">Correctness</h3>
+<p>The provided input data files ending with the number of clusters and maximum number of iterations are generated with pre-defined clusters and normal distribution points.
+We will check the correctness with the 4 given input files (<code>input2D_2clusters.in</code>, <code>input2D_10clusters.in</code>, <code>input10D_10clusters.in</code>, and <code>input100D_300clusters.in</code>) <strong>using 10 iterations</strong> and compare with the given respective output files. For all of them, we will check the result of C-simulation, and for the first two (the smaller ones), also the results of Co-Simulation. For example, if you want to test the correctness of your base implementation with the file <code>input2D_10clusters.in</code>:</p>
+<pre><code class="language-bash">sbatch job_base.sh
+
+<span class="hljs-comment"># Wait for the job completion ...</span>
+
+<span class="hljs-comment"># Evaluate correctness of the C-Simulation output</span>
+diff ./KMEANS_HLS_base/solution_KMEANS_HLS_base/csim/build/2D_10clusters.out ./test_files/2D_10clusters_10iter.out
+
+<span class="hljs-comment"># Valuate correctness of the RTL Co-simulation output</span>
+diff ./KMEANS_HLS_base/solution_KMEANS_HLS_base/sim/wrapc_pc/2D_10clusters.out test_files/2D_10clusters_10iter.out
+</code></pre>
+<p><strong>Note:</strong> to enable RTL Co-Simulation, you have to properly define the interfaces of the top-function, including their depth.</p>
+<p>See the script <code>test_files/datagen.py</code> to understand how these input data files are generated and the Output section for the running arguments to get the reference output file.</p>
+<p>Since we are using single-precision numbers, testing with differently generate data, larger dimensions, or point counts may result in slight accuracy discrepancies between the CPU and FPGA. <strong>This is why we suggest you limit your correctness check to small input files, or the four mentioned above.</strong></p>
+<p>We will check that your HLS implementation passes the csim, csynth and cosim stages as described before.</p>
+<h3 id="performance">Performance</h3>
+<p>Provided that your code is correct (as defined above), the quality of your solution is evaluated by the latency, resource consumption, and synthesis frequency (Fmax) reported after the synthesis step (<code>csynth</code>). You can find this information in the report generated by the synthesis process (e.g., under <code>KMEANS_HLS_base/solution_KMEANS_HLS_base/syn/report</code>).</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
