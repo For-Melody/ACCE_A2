@@ -44,9 +44,9 @@ void do_compute(const parameters& p, results& r) {
     float* centroids = r.centroids;
 
     // Static buffers replace malloc/free
-    static int   pointsPerClass[K];
-    static float auxCentroids[K * ndims];
-    static float distCentroids[K];
+    static int   pointsPerClass[MAX_K];
+    static float auxCentroids[MAX_K * MAX_NDIMS];
+    static float distCentroids[MAX_K];
 
 #ifndef __SYNTHESIS__
     // Timing for C simulation only
