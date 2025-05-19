@@ -3,6 +3,11 @@
 #include <hls_math.h>
 #include <cstring>
 
+#define MAX_POINTS 100000   
+#define MAX_NDIMS       64   
+#define MAX_K           32   
+
+
 // Compute square of the Euclidean distance
 float euclideanDistanceSquared(const float* point, const float* center, int ndims) {
 #pragma HLS INLINE off
@@ -39,9 +44,9 @@ void do_compute(const parameters& p, results& r) {
     float* centroids = r.centroids;
 
     // Static buffers replace malloc/free
-    static int   pointsPerClass[MAX_K];
-    static float auxCentroids[MAX_K * MAX_NDIMS];
-    static float distCentroids[MAX_K];
+    static int   pointsPerClass[K];
+    static float auxCentroids[K * ndims];
+    static float distCentroids[K];
 
 #ifndef __SYNTHESIS__
     // Timing for C simulation only
